@@ -12,10 +12,13 @@ contract TaskEscrow {
         address client;
         address freelancer;
         uint amount;
+        string description;  
         bool completed;
     }
 
     mapping(uint => Task) public tasks;
+    mapping(address => uint[]) public clientTasks;
+    mapping(address => uint[]) public freelancerTasks;
     uint public taskCount;
 
     // Address of FreelancerRegistry contract
@@ -27,24 +30,27 @@ contract TaskEscrow {
     }
 
     // Create a new task and lock payment
-    function createTask(address _freelancer) public payable {
-        require(msg.value > 0, "Payment required");
+    function createTask(address _freelancer, string memory _description) public payable {
+    require(msg.value > 0, "Payment required");
 
-        // Check if freelancer is registered
-        require(
-            registry.isRegistered(_freelancer),
-            "Freelancer not registered"
-        );
+    require(
+        registry.isRegistered(_freelancer),
+        "Freelancer not registered"
+    );
 
-        taskCount++;
+    taskCount++;
 
-        tasks[taskCount] = Task({
-            client: msg.sender,
-            freelancer: _freelancer,
-            amount: msg.value,
-            completed: false
-        });
-    }
+    tasks[taskCount] = Task({
+        client: msg.sender,
+        freelancer: _freelancer,
+        amount: msg.value,
+        description: _description,   
+        completed: false
+    });
+
+    clientTasks[msg.sender].push(taskCount);
+    freelancerTasks[_freelancer].push(taskCount);
+}
 
     // Client approves task completion → payment released
     function completeTask(uint _taskId) public {
@@ -56,4 +62,14 @@ contract TaskEscrow {
         task.completed = true;
         payable(task.freelancer).transfer(task.amount);
     }
+
+    function getClientTasks(address _client) public view returns (uint[] memory) {
+        return clientTasks[_client];
+    }
+
+    function getFreelancerTasks(address _freelancer) public view returns (uint[] memory) {
+        return freelancerTasks[_freelancer];
+    }
 }
+
+    

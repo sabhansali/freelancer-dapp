@@ -8608,12 +8608,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xbF2c3765C5D927a4F62e8f51A575BaFF963ba4d1",
-      "transactionHash": "0x87464b7c29da3c785ad0b5e9e37c69e5af1773e6185a8ea0e750ae61d0541dd8"
+      "address": "0xD13d2C46f66a40D6fc57AdF8313111dEEA53DFA8",
+      "transactionHash": "0x79cde8025bbef33f505db79a743b6e4154d971d2a718b789839b06e3f2746f2a"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2026-04-05T11:34:55.341Z",
+  "updatedAt": "2026-04-12T12:40:54.093Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
