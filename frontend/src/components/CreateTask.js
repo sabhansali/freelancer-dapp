@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import web3 from '../utils/web3';
+import { getContract, parseEther } from '../utils/ethers';
 import TaskEscrow from '../abi/TaskEscrow.json';
 
 
@@ -25,19 +25,14 @@ function CreateTask({ account }) {
     }
 
     try {
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = TaskEscrow.networks[networkId];
+      const contract = await getContract(TaskEscrow);
 
-      const contract = new web3.eth.Contract(
-        TaskEscrow.abi,
-        deployedNetwork && deployedNetwork.address
-      );
-
-      await contract.methods.createTask(freelancer, description, durationSec).send({
-        from: account,
-        value: web3.utils.toWei(amount, 'ether'),
-        gas: 300000
+      const tx = await contract.createTask(freelancer, description, durationSec, {
+        value: parseEther(amount),
+        gasLimit: 300000
       });
+
+      await tx.wait();
 
       setMessage('Task created and payment locked!');
       setDescription('');

@@ -1,37 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import web3 from '../utils/web3';
+import { formatEther, getContract } from '../utils/ethers';
 import TaskEscrow from '../abi/TaskEscrow.json';
 
 function ViewTasks({ account }) {
   const [details, setDetails] = useState([]);
   const [activeTab, setActiveTab] = useState('client'); // 'client' or 'freelancer'
 
+  const normalizeTask = (id, task) => ({
+    id: Number(id),
+    client: task?.client ?? task?.[0] ?? '',
+    freelancer: task?.freelancer ?? task?.[1] ?? '',
+    amount: task?.amount ?? task?.[2] ?? 0n,
+    description: task?.description ?? task?.[3] ?? '',
+    completed: task?.completed ?? task?.[4] ?? false,
+    assignedAt: task?.assignedAt ?? task?.[5] ?? 0n,
+    deadline: task?.deadline ?? task?.[6] ?? 0n,
+    fundsReclaimed: task?.fundsReclaimed ?? task?.[7] ?? false
+  });
+
   useEffect(() => {
     const loadTasks = async () => {
       if (!account) return;
 
       try {
-        const networkId = await web3.eth.net.getId();
-        const deployedNetwork = TaskEscrow.networks[networkId];
+        const contract = await getContract(TaskEscrow);
 
-        const contract = new web3.eth.Contract(
-          TaskEscrow.abi,
-          deployedNetwork && deployedNetwork.address
-        );
-
-        const clientIds = await contract.methods.getClientTasks(account).call();
-        const freelancerIds = await contract.methods.getFreelancerTasks(account).call();
+        const clientIds = await contract.getClientTasks(account);
+        const freelancerIds = await contract.getFreelancerTasks(account);
 
         let allIds = [...new Set([...clientIds, ...freelancerIds])];
 
         let taskDetails = [];
 
         for (let id of allIds) {
-          const task = await contract.methods.tasks(id).call();
-          taskDetails.push({
-            id: Number(id),
-            ...task
-          });
+          const task = await contract.tasks(id);
+          taskDetails.push(normalizeTask(id, task));
         }
 
         // sort once (correct placement)
@@ -49,11 +52,11 @@ function ViewTasks({ account }) {
 
   // filters
   const clientTasks = details.filter(
-    t => t.client.toLowerCase() === account.toLowerCase()
+    t => (t.client || '').toLowerCase() === (account || '').toLowerCase()
   );
 
   const freelancerTasks = details.filter(
-    t => t.freelancer.toLowerCase() === account.toLowerCase()
+    t => (t.freelancer || '').toLowerCase() === (account || '').toLowerCase()
   );
 
 
@@ -86,10 +89,9 @@ function ViewTasks({ account }) {
   const handleReclaim = async (taskId) => {
     setActionMsg('');
     try {
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = TaskEscrow.networks[networkId];
-      const contract = new web3.eth.Contract(TaskEscrow.abi, deployedNetwork && deployedNetwork.address);
-      await contract.methods.reclaimFunds(taskId).send({ from: account, gas: 300000 });
+      const contract = await getContract(TaskEscrow);
+      const tx = await contract.reclaimFunds(taskId, { gasLimit: 300000 });
+      await tx.wait();
       setActionMsg('Funds reclaimed!');
     } catch (err) {
       setActionMsg('Error: ' + err.message);
@@ -108,10 +110,9 @@ function ViewTasks({ account }) {
       return;
     }
     try {
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = TaskEscrow.networks[networkId];
-      const contract = new web3.eth.Contract(TaskEscrow.abi, deployedNetwork && deployedNetwork.address);
-      await contract.methods.extendDeadline(taskId, durationSec).send({ from: account, gas: 300000 });
+      const contract = await getContract(TaskEscrow);
+      const tx = await contract.extendDeadline(taskId, durationSec, { gasLimit: 300000 });
+      await tx.wait();
       setActionMsg('Deadline extended!');
       setExtendTaskId(null);
       setExtendDuration('');
@@ -144,7 +145,7 @@ function ViewTasks({ account }) {
           <p><strong>Client:</strong> {task.client}</p>
           <p><strong>Freelancer:</strong> {task.freelancer}</p>
           <p><strong>Description:</strong> {task.description}</p>
-          <p><strong>Amount:</strong> {web3.utils.fromWei(task.amount, 'ether')} ETH</p>
+          <p><strong>Amount:</strong> {formatEther(task.amount)} ETH</p>
           <p><strong>Assigned At:</strong> {formatDate(task.assignedAt)}</p>
           <p><strong>Deadline:</strong> {formatDate(task.deadline)}</p>
           <p><strong>Countdown:</strong> {getCountdown(Number(task.deadline))}</p>

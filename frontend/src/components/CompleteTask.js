@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import web3 from '../utils/web3';
+import { getContract } from '../utils/ethers';
 import TaskEscrow from '../abi/TaskEscrow.json';
 
 function CompleteTask({ account }) {
@@ -11,20 +11,13 @@ function CompleteTask({ account }) {
     setMessage('');
 
     try {
-      // const accounts = await web3.eth.getAccounts();
+      const contract = await getContract(TaskEscrow);
 
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = TaskEscrow.networks[networkId];
-
-      const contract = new web3.eth.Contract(
-        TaskEscrow.abi,
-        deployedNetwork && deployedNetwork.address
-      );
-
-      await contract.methods.completeTask(taskId).send({
-        from: account,
+      const tx = await contract.completeTask(taskId, {
         gas: 300000
       });
+
+      await tx.wait();
 
       setMessage('Task completed and payment released!');
     } catch (err) {

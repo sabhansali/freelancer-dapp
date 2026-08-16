@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import web3 from './utils/web3';
+import { getConnectedAccount } from './utils/ethers';
 import RegisterFreelancer from './components/RegisterFreelancer';
 import CreateTask from './components/CreateTask';
 import CompleteTask from './components/CompleteTask';
@@ -12,9 +12,11 @@ function App() {
 
   useEffect(() => {
     const loadAccount = async () => {
-      const accs = await web3.eth.getAccounts();
-      if (accs.length > 0) {
-        setAccount(accs[0]);
+      try {
+        const acc = await getConnectedAccount();
+        setAccount(acc);
+      } catch (err) {
+        console.error(err);
       }
     };
 

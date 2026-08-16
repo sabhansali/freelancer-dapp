@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import web3 from '../utils/web3';
+import { getContract } from '../utils/ethers';
 import FreelancerRegistry from '../abi/FreelancerRegistry.json';
 
 function RegisterFreelancer({ account }) {
@@ -12,18 +12,13 @@ function RegisterFreelancer({ account }) {
     setMessage('');
 
     try {
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = FreelancerRegistry.networks[networkId];
+      const contract = await getContract(FreelancerRegistry);
 
-      const contract = new web3.eth.Contract(
-        FreelancerRegistry.abi,
-        deployedNetwork && deployedNetwork.address
-      );
-
-      await contract.methods.register(name, skill).send({
-        from: account,
-        gas: 200000
+      const tx = await contract.register(name, skill, {
+        gasLimit: 200000
       });
+
+      await tx.wait();
 
       setMessage('Registration successful!');
     } catch (err) {
