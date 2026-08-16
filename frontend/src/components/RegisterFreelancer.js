@@ -14,15 +14,26 @@ function RegisterFreelancer({ account }) {
     try {
       const contract = await getContract(FreelancerRegistry);
 
-      const tx = await contract.register(name, skill, {
-        gasLimit: 200000
-      });
+      // check registration status first to avoid revert
+      const already = await contract.isRegistered(account);
+      if (already) {
+        try {
+          const resp = await contract.getFreelancer(account);
+          const existingName = resp[0] ?? resp.name ?? '';
+          const existingSkill = resp[1] ?? resp.skill ?? '';
+          setMessage(`Already registered as "${existingName}" (${existingSkill})`);
+        } catch (_) {
+          setMessage('Already registered');
+        }
+        return;
+      }
 
+      const tx = await contract.register(name, skill, { gasLimit: 200000 });
       await tx.wait();
 
       setMessage('Registration successful!');
     } catch (err) {
-      setMessage('Error: ' + err.message);
+      setMessage('Error: ' + (err?.message || err));
     }
   };
 
