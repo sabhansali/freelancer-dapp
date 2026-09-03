@@ -29,7 +29,7 @@ function CreateTask({ account }) {
 
       const tx = await contract.createTask(freelancer, description, durationSec, {
         value: parseEther(amount),
-        gasLimit: 300000
+        gasLimit: 1000000
       });
 
       await tx.wait();

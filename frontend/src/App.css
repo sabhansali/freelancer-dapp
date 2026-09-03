@@ -93,3 +93,41 @@ select {
 .task-card:hover {
   transform: scale(1.02);
 }
+
+.account-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 12px 15px;
+  background: #172033;
+  border-radius: 10px;
+}
+
+.account-row h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-row h4 strong {
+  color: #38bdf8;
+}
+
+.connect-wallet {
+  padding: 9px 14px;
+  background: #38bdf8;
+  color: #0f172a;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.connect-wallet:hover {
+  background: #7dd3fc;
+}
