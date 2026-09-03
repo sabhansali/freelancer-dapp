@@ -1,27 +1,23 @@
 import { BrowserProvider, Contract, formatEther, parseEther } from 'ethers';
 
-// 1. window.ethereum
-// 2. BrowserProvider
+// Reown AppKit wallet provider
+let appKitProvider = null;
+
+// Set the provider received from Reown
+export const setAppKitProvider = (provider) => {
+  appKitProvider = provider;
+};
+
+// Get the ethers BrowserProvider
 const getBrowserProvider = () => {
-  if (!window.ethereum) {
-    throw new Error('Please install MetaMask');
+  if (!appKitProvider) {
+    throw new Error('Please connect your wallet using Reown.');
   }
 
-  return new BrowserProvider(window.ethereum);
+  return new BrowserProvider(appKitProvider);
 };
 
-// 3. Request MetaMask account
-export const requestAccounts = async () => {
-  const provider = getBrowserProvider();
-
-  const accounts = await provider.send('eth_requestAccounts', []);
-
-  console.log('Connected Account:', accounts[0] || 'No account connected');
-
-  return accounts;
-};
-
-// Get already-connected account without triggering MetaMask popup
+// Get the connected wallet account
 export const getConnectedAccount = async () => {
   const provider = getBrowserProvider();
 
@@ -30,33 +26,38 @@ export const getConnectedAccount = async () => {
   return accounts[0] || '';
 };
 
+// Get contract connected to Reown wallet
 export const getContract = async (artifact) => {
   const provider = getBrowserProvider();
 
-  // 6. getNetwork()
+  // Get current network
   const network = await provider.getNetwork();
 
   console.log('Network Name:', network.name);
   console.log('Chain ID:', network.chainId.toString());
 
-  const networkId = await provider.send("net_version", []);
+  // Truffle network ID
+  const networkId = await provider.send('net_version', []);
+
+  console.log('Network ID:', networkId);
+
   const deployedNetwork = artifact.networks?.[networkId];
 
   if (!deployedNetwork || !deployedNetwork.address) {
     throw new Error(
-      `Contract not deployed on the current network (Chain ID: ${networkId})`
+      `Contract not deployed on the current network (Network ID: ${networkId}, Chain ID: ${network.chainId})`
     );
   }
 
-  // 4. getSigner()
+  // Get signer from Reown wallet
   const signer = await provider.getSigner();
 
-  // 5. getAddress()
+  // Get wallet address
   const address = await signer.getAddress();
 
   console.log('Signer Address:', address);
 
-  // 8. Contract(address, ABI, signer)
+  // Connect contract using Reown signer
   const contract = new Contract(
     deployedNetwork.address,
     artifact.abi,

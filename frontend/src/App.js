@@ -1,78 +1,107 @@
-import React, { useState, useEffect } from "react";
-import { requestAccounts } from "./utils/ethers";
+import React, { useEffect, useState } from "react";
+
+import {
+  useAppKitAccount,
+  useAppKitProvider
+} from "@reown/appkit/react";
+
+import { setAppKitProvider } from "./utils/ethers";
+
 import RegisterFreelancer from "./components/RegisterFreelancer";
 import CreateTask from "./components/CreateTask";
 import CompleteTask from "./components/CompleteTask";
 import ViewTasks from "./components/ViewTasks";
+
 import "./App.css";
 
 function App() {
   const [view, setView] = useState("register");
   const [account, setAccount] = useState("");
 
-  const connectWallet = async () => {
-    try {
-      const accounts = await requestAccounts();
-      setAccount(accounts[0] || "");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // Reown account information
+  const { address, isConnected } = useAppKitAccount();
 
+  // Reown EVM wallet provider
+  const { walletProvider } = useAppKitProvider("eip155");
+
+  // Store Reown provider for the rest of the application
   useEffect(() => {
-    if (window.ethereum) {
-    const handleAccountsChanged = (accounts) => {
-      setAccount(accounts[0] || "");
-    };
+    if (walletProvider) {
+      setAppKitProvider(walletProvider);
+    }
+  }, [walletProvider]);
 
-    window.ethereum.on("accountsChanged", handleAccountsChanged);
-
-    return () => {
-      window.ethereum.removeListener(
-        "accountsChanged",
-        handleAccountsChanged
-      );
-    };
-  }
-  }, []);
+  // Update account whenever Reown connects/disconnects
+  useEffect(() => {
+    if (isConnected && address) {
+      setAccount(address);
+    } else {
+      setAccount("");
+    }
+  }, [address, isConnected]);
 
   return (
     <div className="App">
+
       <div className="Nav">
         <h1>Freelancer Escrow DApp</h1>
 
-        <p style={{ textAlign: "center", fontSize: "14px", color: "#94a3b8" }}>
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "14px",
+            color: "#94a3b8"
+          }}
+        >
           Secure freelance payments using blockchain escrow
         </p>
       </div>
 
       <div className="account-row">
+
         <h4>
-          <strong>Connected Account:</strong> {account || "Not connected"}
+          <strong>Connected Account:</strong>{" "}
+          {account || "Not connected"}
         </h4>
 
-        <button className="connect-wallet" onClick={connectWallet}>
-          {account ? "✓ MetaMask Connected" : "Connect MetaMask"}
-        </button>
+        <div className="connect-wallet">
+          <appkit-button />
+        </div>
+
       </div>
 
       <nav>
-        <button onClick={() => setView("register")}>Register Freelancer</button>
+        <button onClick={() => setView("register")}>
+          Register Freelancer
+        </button>
 
-        <button onClick={() => setView("createTask")}>Create Task</button>
+        <button onClick={() => setView("createTask")}>
+          Create Task
+        </button>
 
-        <button onClick={() => setView("completeTask")}>Complete Task</button>
+        <button onClick={() => setView("completeTask")}>
+          Complete Task
+        </button>
       </nav>
 
       <div style={{ marginTop: 20 }}>
-        {view === "register" && <RegisterFreelancer account={account} />}
 
-        {view === "createTask" && <CreateTask account={account} />}
+        {view === "register" && (
+          <RegisterFreelancer account={account} />
+        )}
 
-        {view === "completeTask" && <CompleteTask account={account} />}
+        {view === "createTask" && (
+          <CreateTask account={account} />
+        )}
+
+        {view === "completeTask" && (
+          <CompleteTask account={account} />
+        )}
+
       </div>
 
       <ViewTasks account={account} />
+
     </div>
   );
 }

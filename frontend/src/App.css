@@ -118,16 +118,7 @@ select {
 }
 
 .connect-wallet {
-  padding: 9px 14px;
-  background: #38bdf8;
-  color: #0f172a;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.connect-wallet:hover {
-  background: #7dd3fc;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }

@@ -28,7 +28,7 @@ function RegisterFreelancer({ account }) {
         return;
       }
 
-      const tx = await contract.register(name, skill, { gasLimit: 200000 });
+      const tx = await contract.register(name, skill);
       await tx.wait();
 
       setMessage('Registration successful!');
