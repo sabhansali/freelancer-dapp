@@ -11,11 +11,13 @@ import RegisterFreelancer from "./components/RegisterFreelancer";
 import CreateTask from "./components/CreateTask";
 import CompleteTask from "./components/CompleteTask";
 import ViewTasks from "./components/ViewTasks";
+import FreelancerVault from "./components/FreelancerVault";
 
 import "./App.css";
 
 function App() {
-  const [view, setView] = useState("register");
+  const [view, setView] = useState("dashboard");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [account, setAccount] = useState("");
 
   // Reown account information
@@ -43,7 +45,18 @@ function App() {
   return (
     <div className="App">
 
+      {menuOpen && <div className="drawer-backdrop" onClick={() => setMenuOpen(false)} />}
+      <aside className={`side-drawer ${menuOpen ? "open" : ""}`}>
+        <div className="drawer-header">
+          <span>Freelancer DApp</span>
+          <button className="close-menu" onClick={() => setMenuOpen(false)} aria-label="Close menu">×</button>
+        </div>
+        <button className={view === "dashboard" ? "drawer-link active" : "drawer-link"} onClick={() => { setView("dashboard"); setMenuOpen(false); }}>Dashboard</button>
+        <button className={view === "vault" ? "drawer-link active" : "drawer-link"} onClick={() => { setView("vault"); setMenuOpen(false); }}>FRL Vault</button>
+      </aside>
+
       <div className="Nav">
+        <button className="menu-button" onClick={() => setMenuOpen(true)} aria-label="Open menu">☰</button>
         <h1>Freelancer Escrow DApp</h1>
 
         <p
@@ -70,7 +83,7 @@ function App() {
 
       </div>
 
-      <nav>
+      {view !== "vault" && <nav>
         <button onClick={() => setView("register")}>
           Register Freelancer
         </button>
@@ -82,11 +95,11 @@ function App() {
         <button onClick={() => setView("completeTask")}>
           Complete Task
         </button>
-      </nav>
+      </nav>}
 
-      <div style={{ marginTop: 20 }}>
+      {view !== "vault" && <div style={{ marginTop: 20 }}>
 
-        {view === "register" && (
+        {(view === "dashboard" || view === "register") && (
           <RegisterFreelancer account={account} />
         )}
 
@@ -98,9 +111,10 @@ function App() {
           <CompleteTask account={account} />
         )}
 
-      </div>
+      </div>}
 
-      <ViewTasks account={account} />
+      {view !== "vault" && <ViewTasks account={account} />}
+      {view === "vault" && <FreelancerVault account={account} />}
 
     </div>
   );

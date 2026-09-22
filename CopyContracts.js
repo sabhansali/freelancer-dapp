@@ -7,7 +7,9 @@ const frontendPath = path.join(__dirname, 'frontend/src/abi');
 const files = [
   'FreelancerRegistry.json',
   'IFreelancerRegistry.json',
-  'TaskEscrow.json'
+  'TaskEscrow.json',
+  'FreelancerToken.json',
+  'FreelancerVault.json'
 ];
 
 files.forEach(file => {

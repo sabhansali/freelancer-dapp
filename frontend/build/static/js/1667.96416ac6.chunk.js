@@ -1,0 +1,766 @@
+"use strict";(globalThis.webpackChunkfreelancer_dapp_frontend=globalThis.webpackChunkfreelancer_dapp_frontend||[]).push([[1667],{81667(e,t,i){i.r(t),i.d(t,{W3mSendConfirmedView:()=>oe,W3mSendSelectTokenView:()=>W,W3mWalletSendPreviewView:()=>ie,W3mWalletSendView:()=>D});var n=i(37022),r=i(56370),o=i(268),s=i(36568),a=i(61139),l=i(17321),c=i(77905),u=i(73609),d=i(93022),h=i(24657),p=i(7258),g=i(84657),f=i(1348),m=i(86609),w=i(89268),k=(i(92016),i(84107),i(60677),i(40135),i(94657));i(10477),i(84875);const y=w.AH`
+  :host {
+    width: 100%;
+    height: 100px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[5]}};
+    border: 1px solid ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    transition: background-color ${e=>{let{durations:t}=e;return t.lg}}
+      ${e=>{let{easings:t}=e;return t["ease-out-power-1"]}};
+    will-change: background-color;
+    position: relative;
+  }
+
+  :host(:hover) {
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundSecondary}};
+  }
+
+  wui-flex {
+    width: 100%;
+    height: fit-content;
+  }
+
+  wui-button {
+    display: ruby;
+    color: ${e=>{let{tokens:t}=e;return t.theme.textPrimary}};
+    margin: 0 ${e=>{let{spacing:t}=e;return t[2]}};
+  }
+
+  .instruction {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .paste {
+    display: inline-flex;
+  }
+
+  textarea {
+    background: transparent;
+    width: 100%;
+    font-family: ${e=>{let{fontFamily:t}=e;return t.regular}};
+    font-style: normal;
+    font-size: ${e=>{let{textSize:t}=e;return t.large}};
+    font-weight: ${e=>{let{fontWeight:t}=e;return t.regular}};
+    line-height: ${e=>{let{typography:t}=e;return t["lg-regular"].lineHeight}};
+    letter-spacing: ${e=>{let{typography:t}=e;return t["lg-regular"].letterSpacing}};
+    color: ${e=>{let{tokens:t}=e;return t.theme.textPrimary}};
+    caret-color: ${e=>{let{tokens:t}=e;return t.core.backgroundAccentPrimary}};
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    padding: 0px;
+    border: none;
+    outline: none;
+    appearance: none;
+    resize: none;
+    overflow: hidden;
+  }
+`;var b=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let v=class extends n.WF{constructor(){super(...arguments),this.inputElementRef=(0,k._)(),this.instructionElementRef=(0,k._)(),this.readOnly=!1,this.instructionHidden=Boolean(this.value),this.pasting=!1,this.onDebouncedSearch=h.w.debounce(async e=>{if(!e.length)return void this.setReceiverAddress("");const t=l.W.state.activeChain;if(h.w.isAddress(e,t))this.setReceiverAddress(e);else try{const t=await d.x.getEnsAddress(e);if(t){s.R.setReceiverProfileName(e),s.R.setReceiverAddress(t);const i=await d.x.getEnsAvatar(e);s.R.setReceiverProfileImageUrl(i||void 0)}}catch(i){this.setReceiverAddress(e)}finally{s.R.setLoading(!1)}})}firstUpdated(){this.value&&(this.instructionHidden=!0),this.checkHidden()}render(){return this.readOnly?n.qy` <wui-flex
+        flexDirection="column"
+        justifyContent="center"
+        gap="01"
+        .padding=${["8","4","5","4"]}
+      >
+        <textarea
+          spellcheck="false"
+          ?disabled=${!0}
+          autocomplete="off"
+          .value=${this.value??""}
+        ></textarea>
+      </wui-flex>`:n.qy` <wui-flex
+      @click=${this.onBoxClick.bind(this)}
+      flexDirection="column"
+      justifyContent="center"
+      gap="01"
+      .padding=${["8","4","5","4"]}
+    >
+      <wui-text
+        ${(0,k.K)(this.instructionElementRef)}
+        class="instruction"
+        color="secondary"
+        variant="md-medium"
+      >
+        Type or
+        <wui-button
+          class="paste"
+          size="md"
+          variant="neutral-secondary"
+          iconLeft="copy"
+          @click=${this.onPasteClick.bind(this)}
+        >
+          <wui-icon size="sm" color="inherit" slot="iconLeft" name="copy"></wui-icon>
+          Paste
+        </wui-button>
+        address
+      </wui-text>
+      <textarea
+        spellcheck="false"
+        ?disabled=${!this.instructionHidden}
+        ${(0,k.K)(this.inputElementRef)}
+        @input=${this.onInputChange.bind(this)}
+        @blur=${this.onBlur.bind(this)}
+        .value=${this.value??""}
+        autocomplete="off"
+      ></textarea>
+    </wui-flex>`}async focusInput(){this.instructionElementRef.value&&(this.instructionHidden=!0,await this.toggleInstructionFocus(!1),this.instructionElementRef.value.style.pointerEvents="none",this.inputElementRef.value?.focus(),this.inputElementRef.value&&(this.inputElementRef.value.selectionStart=this.inputElementRef.value.selectionEnd=this.inputElementRef.value.value.length))}async focusInstruction(){this.instructionElementRef.value&&(this.instructionHidden=!1,await this.toggleInstructionFocus(!0),this.instructionElementRef.value.style.pointerEvents="auto",this.inputElementRef.value?.blur())}async toggleInstructionFocus(e){this.instructionElementRef.value&&await this.instructionElementRef.value.animate([{opacity:e?0:1},{opacity:e?1:0}],{duration:100,easing:"ease",fill:"forwards"}).finished}onBoxClick(){this.value||this.instructionHidden||this.focusInput()}onBlur(){this.value||!this.instructionHidden||this.pasting||this.focusInstruction()}checkHidden(){this.instructionHidden&&this.focusInput()}async onPasteClick(){this.pasting=!0;const e=await navigator.clipboard.readText();s.R.setReceiverAddress(e),this.focusInput()}onInputChange(e){const t=e.target;this.pasting=!1,this.value=e.target?.value,t.value&&!this.instructionHidden&&this.focusInput(),s.R.setLoading(!0),this.onDebouncedSearch(t.value)}setReceiverAddress(e){s.R.setReceiverAddress(e),s.R.setReceiverProfileName(void 0),s.R.setReceiverProfileImageUrl(void 0),s.R.setLoading(!1)}};v.styles=y,b([(0,r.MZ)()],v.prototype,"value",void 0),b([(0,r.MZ)({type:Boolean})],v.prototype,"readOnly",void 0),b([(0,r.wk)()],v.prototype,"instructionHidden",void 0),b([(0,r.wk)()],v.prototype,"pasting",void 0),v=b([(0,w.EM)("w3m-input-address")],v);i(54109),i(43901),i(83225);const x=w.AH`
+  :host {
+    width: 100%;
+    height: 100px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[5]}};
+    border: 1px solid ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    transition: background-color ${e=>{let{durations:t}=e;return t.lg}}
+      ${e=>{let{easings:t}=e;return t["ease-out-power-1"]}};
+    will-change: background-color;
+    transition: all ${e=>{let{easings:t}=e;return t["ease-out-power-1"]}}
+      ${e=>{let{durations:t}=e;return t.lg}};
+  }
+
+  :host(:hover) {
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundSecondary}};
+  }
+
+  wui-flex {
+    width: 100%;
+    height: fit-content;
+  }
+
+  wui-button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  wui-input-amount {
+    mask-image: linear-gradient(
+      270deg,
+      transparent 0px,
+      transparent 8px,
+      black 24px,
+      black 25px,
+      black 32px,
+      black 100%
+    );
+  }
+
+  .totalValue {
+    width: 100%;
+  }
+`;var $=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let R=class extends n.WF{constructor(){super(...arguments),this.readOnly=!1,this.isInsufficientBalance=!1}render(){const e=this.readOnly||!this.token;return n.qy` <wui-flex
+      flexDirection="column"
+      gap="01"
+      .padding=${["5","3","4","3"]}
+    >
+      <wui-flex alignItems="center">
+        <wui-input-amount
+          @inputChange=${this.onInputChange.bind(this)}
+          ?disabled=${e}
+          .value=${this.sendTokenAmount??""}
+          ?error=${Boolean(this.isInsufficientBalance)}
+        ></wui-input-amount>
+        ${this.buttonTemplate()}
+      </wui-flex>
+      ${this.bottomTemplate()}
+    </wui-flex>`}buttonTemplate(){return this.token?n.qy`<wui-token-button
+        text=${this.token.symbol}
+        imageSrc=${this.token.iconUrl}
+        @click=${this.handleSelectButtonClick.bind(this)}
+      >
+      </wui-token-button>`:n.qy`<wui-button
+      size="md"
+      variant="neutral-secondary"
+      @click=${this.handleSelectButtonClick.bind(this)}
+      >Select token</wui-button
+    >`}handleSelectButtonClick(){this.readOnly||a.I.push("WalletSendSelectToken")}sendValueTemplate(){if(!this.readOnly&&this.token&&this.sendTokenAmount){const e=this.token.price*Number(this.sendTokenAmount);return n.qy`<wui-text class="totalValue" variant="sm-regular" color="secondary"
+        >${e?`$${o.S.formatNumberToLocalString(e,2)}`:"Incorrect value"}</wui-text
+      >`}return null}maxAmountTemplate(){return this.token?n.qy` <wui-text variant="sm-regular" color="secondary">
+        ${w.Zv.roundNumber(Number(this.token.quantity.numeric),6,5)}
+      </wui-text>`:null}actionTemplate(){return this.token?n.qy`<wui-link @click=${this.onMaxClick.bind(this)}>Max</wui-link>`:null}bottomTemplate(){return this.readOnly?null:n.qy`<wui-flex alignItems="center" justifyContent="space-between">
+      ${this.sendValueTemplate()}
+      <wui-flex alignItems="center" gap="01" justifyContent="flex-end">
+        ${this.maxAmountTemplate()} ${this.actionTemplate()}
+      </wui-flex>
+    </wui-flex>`}onInputChange(e){s.R.setTokenAmount(String(e.detail))}onMaxClick(){if(this.token){const e=Number(this.token.quantity.decimals),t=o.S.bigNumber(this.token.quantity.numeric);if(!this.token.address&&this.gasPrice){const i=65000n*BigInt(this.gasPrice),n=o.S.bigNumber(i.toString()).div(o.S.bigNumber(10).pow(e)),r=t.minus(n);s.R.setTokenAmount(r.gt(0)?r.toFixed(e,0):"0")}else s.R.setTokenAmount(t.toFixed(e,0))}}};R.styles=x,$([(0,r.MZ)({type:Object})],R.prototype,"token",void 0),$([(0,r.MZ)({type:Boolean})],R.prototype,"readOnly",void 0),$([(0,r.MZ)({type:String})],R.prototype,"sendTokenAmount",void 0),$([(0,r.MZ)({type:Boolean})],R.prototype,"isInsufficientBalance",void 0),$([(0,r.MZ)({type:String})],R.prototype,"gasPrice",void 0),R=$([(0,w.EM)("w3m-input-token")],R);const A=w.AH`
+  :host {
+    display: block;
+  }
+
+  wui-flex {
+    position: relative;
+  }
+
+  wui-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[10]}} !important;
+    border: 4px solid ${e=>{let{tokens:t}=e;return t.theme.backgroundPrimary}};
+    background: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  wui-button {
+    --local-border-radius: ${e=>{let{borderRadius:t}=e;return t[4]}} !important;
+  }
+
+  .inputContainer {
+    height: fit-content;
+  }
+`;var P=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};const S="Insufficient Funds",T="Incorrect Value",C="Invalid Address",E="Add Address",I="Add Amount",N="Select Token",z="Preview Send";let D=class extends n.WF{constructor(){super(),this.unsubscribe=[],this.isTryingToChooseDifferentWallet=!1,this.token=s.R.state.token,this.sendTokenAmount=s.R.state.sendTokenAmount,this.receiverAddress=s.R.state.receiverAddress,this.receiverProfileName=s.R.state.receiverProfileName,this.loading=s.R.state.loading,this.params=a.I.state.data?.send,this.caipAddress=l.W.getAccountData()?.caipAddress,this.disconnecting=!1,this.gasFee=c.GN.state.gasFee,this.token&&!this.params&&(this.fetchBalances(),this.fetchNetworkPrice());const e=l.W.subscribeKey("activeCaipAddress",t=>{!t&&this.isTryingToChooseDifferentWallet&&(this.isTryingToChooseDifferentWallet=!1,u.W.open({view:"Connect",data:{redirectView:"WalletSend"}}).catch(()=>null),e())});this.unsubscribe.push(l.W.subscribeAccountStateProp("caipAddress",e=>{this.caipAddress=e}),s.R.subscribe(e=>{this.token=e.token,this.sendTokenAmount=e.sendTokenAmount,this.receiverAddress=e.receiverAddress,this.receiverProfileName=e.receiverProfileName,this.loading=e.loading}),c.GN.subscribeKey("gasFee",e=>{this.gasFee=e}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}async firstUpdated(){await this.handleSendParameters()}render(){const e=this.getMessage(),t=Boolean(this.params);return n.qy` <wui-flex flexDirection="column" .padding=${["0","4","4","4"]}>
+      <wui-flex class="inputContainer" gap="2" flexDirection="column">
+        <w3m-input-token
+          .token=${this.token}
+          .sendTokenAmount=${this.sendTokenAmount}
+          .gasPrice=${this.gasFee}
+          ?readOnly=${t}
+          ?isInsufficientBalance=${e===S}
+        ></w3m-input-token>
+        <wui-icon-box size="md" variant="secondary" icon="arrowBottom"></wui-icon-box>
+        <w3m-input-address
+          ?readOnly=${t}
+          .value=${this.receiverProfileName?this.receiverProfileName:this.receiverAddress}
+        ></w3m-input-address>
+      </wui-flex>
+      ${this.buttonTemplate(e)}
+    </wui-flex>`}async fetchBalances(){await s.R.fetchTokenBalance(),s.R.fetchNetworkBalance()}async fetchNetworkPrice(){await c.GN.getNetworkTokenPrice(),await c.GN.getInitialGasPrice()}onButtonClick(){a.I.push("WalletSendPreview",{send:this.params})}onFundWalletClick(){a.I.push("FundWallet",{redirectView:"WalletSend"})}async onConnectDifferentWalletClick(){try{this.isTryingToChooseDifferentWallet=!0,this.disconnecting=!0,await d.x.disconnect()}finally{this.disconnecting=!1}}getMessage(){if(!this.token)return N;if(!this.sendTokenAmount)return I;if(this.token.price){if(!(Number(this.sendTokenAmount)*this.token.price))return T}return o.S.bigNumber(this.sendTokenAmount).gt(this.token.quantity.numeric)?S:this.receiverAddress?h.w.isAddress(this.receiverAddress,l.W.state.activeChain)?z:C:E}buttonTemplate(e){const t=!e.startsWith(z),i=e===S,r=Boolean(this.params);return i&&!r?n.qy`
+        <wui-flex .margin=${["4","0","0","0"]} flexDirection="column" gap="4">
+          <wui-button
+            @click=${this.onFundWalletClick.bind(this)}
+            size="lg"
+            variant="accent-secondary"
+            fullWidth
+          >
+            Fund Wallet
+          </wui-button>
+
+          <wui-separator data-testid="wui-separator" text="or"></wui-separator>
+
+          <wui-button
+            @click=${this.onConnectDifferentWalletClick.bind(this)}
+            size="lg"
+            variant="neutral-secondary"
+            fullWidth
+            ?loading=${this.disconnecting}
+          >
+            Connect a different wallet
+          </wui-button>
+        </wui-flex>
+      `:n.qy`<wui-flex .margin=${["4","0","0","0"]}>
+      <wui-button
+        @click=${this.onButtonClick.bind(this)}
+        ?disabled=${t}
+        size="lg"
+        variant="accent-primary"
+        ?loading=${this.loading}
+        fullWidth
+      >
+        ${e}
+      </wui-button>
+    </wui-flex>`}async handleSendParameters(){if(this.loading=!0,!this.params)return void(this.loading=!1);const e=Number(this.params.amount);if(isNaN(e))return p.P.showError("Invalid amount"),void(this.loading=!1);const{namespace:t,chainId:i,assetAddress:n}=this.params;if(!g.oU.SEND_PARAMS_SUPPORTED_CHAINS.includes(t))return p.P.showError(`Chain "${t}" is not supported for send parameters`),void(this.loading=!1);const r=l.W.getCaipNetworkById(i,t);if(!r)return p.P.showError(`Network with id "${i}" not found`),void(this.loading=!1);try{const{balance:t,name:i,symbol:o,decimals:a}=await m.Z.fetchERC20Balance({caipAddress:this.caipAddress,assetAddress:n,caipNetwork:r});if(!i||!o||!a||!t)return void p.P.showError("Token not found");s.R.setToken({name:i,symbol:o,chainId:r.id.toString(),address:`${r.chainNamespace}:${r.id}:${n}`,value:0,price:0,quantity:{decimals:a.toString(),numeric:t.toString()},iconUrl:f.$.getTokenImage(o)??""}),s.R.setTokenAmount(String(e)),s.R.setReceiverAddress(this.params.to)}catch(o){console.error("Failed to load token information:",o),p.P.showError("Failed to load token information")}finally{this.loading=!1}}};D.styles=A,P([(0,r.wk)()],D.prototype,"token",void 0),P([(0,r.wk)()],D.prototype,"sendTokenAmount",void 0),P([(0,r.wk)()],D.prototype,"receiverAddress",void 0),P([(0,r.wk)()],D.prototype,"receiverProfileName",void 0),P([(0,r.wk)()],D.prototype,"loading",void 0),P([(0,r.wk)()],D.prototype,"params",void 0),P([(0,r.wk)()],D.prototype,"caipAddress",void 0),P([(0,r.wk)()],D.prototype,"disconnecting",void 0),P([(0,r.wk)()],D.prototype,"gasFee",void 0),D=P([(0,w.EM)("w3m-wallet-send-view")],D);i(76184),i(30737);const B=w.AH`
+  .contentContainer {
+    height: 440px;
+    overflow: scroll;
+    scrollbar-width: none;
+  }
+
+  .contentContainer::-webkit-scrollbar {
+    display: none;
+  }
+
+  wui-icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[3]}};
+  }
+`;var O=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let W=class extends n.WF{constructor(){super(),this.unsubscribe=[],this.tokenBalances=s.R.state.tokenBalances,this.search="",this.onDebouncedSearch=h.w.debounce(e=>{this.search=e}),this.fetchBalancesAndNetworkPrice(),this.unsubscribe.push(s.R.subscribe(e=>{this.tokenBalances=e.tokenBalances}))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){return n.qy`
+      <wui-flex flexDirection="column">
+        ${this.templateSearchInput()} <wui-separator></wui-separator> ${this.templateTokens()}
+      </wui-flex>
+    `}async fetchBalancesAndNetworkPrice(){this.tokenBalances&&0!==this.tokenBalances?.length||(await this.fetchBalances(),await this.fetchNetworkPrice())}async fetchBalances(){await s.R.fetchTokenBalance(),s.R.fetchNetworkBalance()}async fetchNetworkPrice(){await c.GN.getNetworkTokenPrice()}templateSearchInput(){return n.qy`
+      <wui-flex gap="2" padding="3">
+        <wui-input-text
+          @inputChange=${this.onInputChange.bind(this)}
+          class="network-search-input"
+          size="sm"
+          placeholder="Search token"
+          icon="search"
+        ></wui-input-text>
+      </wui-flex>
+    `}templateTokens(){return this.tokens=this.tokenBalances?.filter(e=>e.chainId===l.W.state.activeCaipNetwork?.caipNetworkId),this.search?this.filteredTokens=this.tokenBalances?.filter(e=>e.name.toLowerCase().includes(this.search.toLowerCase())):this.filteredTokens=this.tokens,n.qy`
+      <wui-flex
+        class="contentContainer"
+        flexDirection="column"
+        .padding=${["0","3","0","3"]}
+      >
+        <wui-flex justifyContent="flex-start" .padding=${["4","3","3","3"]}>
+          <wui-text variant="md-medium" color="secondary">Your tokens</wui-text>
+        </wui-flex>
+        <wui-flex flexDirection="column" gap="2">
+          ${this.filteredTokens&&this.filteredTokens.length>0?this.filteredTokens.map(e=>n.qy`<wui-list-token
+                    @click=${this.handleTokenClick.bind(this,e)}
+                    ?clickable=${!0}
+                    tokenName=${e.name}
+                    tokenImageUrl=${e.iconUrl}
+                    tokenAmount=${e.quantity.numeric}
+                    tokenValue=${e.value}
+                    tokenCurrency=${e.symbol}
+                  ></wui-list-token>`):n.qy`<wui-flex
+                .padding=${["20","0","0","0"]}
+                alignItems="center"
+                flexDirection="column"
+                gap="4"
+              >
+                <wui-icon-box icon="coinPlaceholder" color="default" size="lg"></wui-icon-box>
+                <wui-flex
+                  class="textContent"
+                  gap="2"
+                  flexDirection="column"
+                  justifyContent="center"
+                  flexDirection="column"
+                >
+                  <wui-text variant="lg-medium" align="center" color="primary">
+                    No tokens found
+                  </wui-text>
+                  <wui-text variant="lg-regular" align="center" color="secondary">
+                    Your tokens will appear here
+                  </wui-text>
+                </wui-flex>
+                <wui-link @click=${this.onBuyClick.bind(this)}>Buy</wui-link>
+              </wui-flex>`}
+        </wui-flex>
+      </wui-flex>
+    `}onBuyClick(){a.I.push("OnRampProviders")}onInputChange(e){this.onDebouncedSearch(e.detail)}handleTokenClick(e){s.R.setToken(e),s.R.setTokenAmount(void 0),a.I.goBack()}};W.styles=B,O([(0,r.wk)()],W.prototype,"tokenBalances",void 0),O([(0,r.wk)()],W.prototype,"tokens",void 0),O([(0,r.wk)()],W.prototype,"filteredTokens",void 0),O([(0,r.wk)()],W.prototype,"search",void 0),W=O([(0,w.EM)("w3m-wallet-send-select-token-view")],W);var j=i(35536),q=i(68882),M=i(79323),Z=(i(18820),i(71056),i(7836),i(52574),i(39446)),F=i(37845),H=(i(43946),i(89406));const V=H.AH`
+  :host {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: ${e=>{let{spacing:t}=e;return t[1]}};
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[32]}};
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    padding: ${e=>{let{spacing:t}=e;return t[1]}};
+    padding-left: ${e=>{let{spacing:t}=e;return t[2]}};
+  }
+
+  wui-avatar,
+  wui-image {
+    width: 24px;
+    height: 24px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[16]}};
+  }
+
+  wui-icon {
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[16]}};
+  }
+`;var _=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let U=class extends n.WF{constructor(){super(...arguments),this.text=""}render(){return n.qy`<wui-text variant="lg-regular" color="primary">${this.text}</wui-text>
+      ${this.imageTemplate()}`}imageTemplate(){return this.address?n.qy`<wui-avatar address=${this.address} .imageSrc=${this.imageSrc}></wui-avatar>`:this.imageSrc?n.qy`<wui-image src=${this.imageSrc}></wui-image>`:n.qy`<wui-icon size="lg" color="inverse" name="networkPlaceholder"></wui-icon>`}};U.styles=[Z.W5,Z.fD,V],_([(0,r.MZ)({type:String})],U.prototype,"text",void 0),_([(0,r.MZ)({type:String})],U.prototype,"address",void 0),_([(0,r.MZ)({type:String})],U.prototype,"imageSrc",void 0),U=_([(0,F.E)("wui-preview-item")],U);var L=i(56440);const G=H.AH`
+  :host {
+    display: flex;
+    padding: ${e=>{let{spacing:t}=e;return t[4]}} ${e=>{let{spacing:t}=e;return t[3]}};
+    width: 100%;
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[4]}};
+  }
+
+  wui-image {
+    width: 20px;
+    height: 20px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[16]}};
+  }
+
+  wui-icon {
+    width: 20px;
+    height: 20px;
+  }
+`;var K=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let Y=class extends n.WF{constructor(){super(...arguments),this.imageSrc=void 0,this.textTitle="",this.textValue=void 0}render(){return n.qy`
+      <wui-flex justifyContent="space-between" alignItems="center">
+        <wui-text variant="lg-regular" color="primary"> ${this.textTitle} </wui-text>
+        ${this.templateContent()}
+      </wui-flex>
+    `}templateContent(){return this.imageSrc?n.qy`<wui-image src=${this.imageSrc} alt=${this.textTitle}></wui-image>`:this.textValue?n.qy` <wui-text variant="md-regular" color="secondary"> ${this.textValue} </wui-text>`:n.qy`<wui-icon size="inherit" color="default" name="networkPlaceholder"></wui-icon>`}};Y.styles=[Z.W5,Z.fD,G],K([(0,r.MZ)()],Y.prototype,"imageSrc",void 0),K([(0,r.MZ)()],Y.prototype,"textTitle",void 0),K([(0,r.MZ)()],Y.prototype,"textValue",void 0),Y=K([(0,F.E)("wui-list-content")],Y);const J=w.AH`
+  :host {
+    display: flex;
+    width: auto;
+    flex-direction: column;
+    gap: ${e=>{let{spacing:t}=e;return t[1]}};
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[5]}};
+    background: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    padding: ${e=>{let{spacing:t}=e;return t[3]}} ${e=>{let{spacing:t}=e;return t[2]}}
+      ${e=>{let{spacing:t}=e;return t[2]}} ${e=>{let{spacing:t}=e;return t[2]}};
+  }
+
+  wui-list-content {
+    width: -webkit-fill-available !important;
+  }
+
+  wui-text {
+    padding: 0 ${e=>{let{spacing:t}=e;return t[2]}};
+  }
+
+  wui-flex {
+    margin-top: ${e=>{let{spacing:t}=e;return t[2]}};
+  }
+
+  .network {
+    cursor: pointer;
+    transition: background-color ${e=>{let{durations:t}=e;return t.lg}}
+      ${e=>{let{easings:t}=e;return t["ease-out-power-1"]}};
+    will-change: background-color;
+  }
+
+  .network:focus-visible {
+    border: 1px solid ${e=>{let{tokens:t}=e;return t.core.textAccentPrimary}};
+    background-color: ${e=>{let{tokens:t}=e;return t.core.glass010}};
+    -webkit-box-shadow: 0px 0px 0px 4px ${e=>{let{tokens:t}=e;return t.core.foregroundAccent010}};
+    -moz-box-shadow: 0px 0px 0px 4px ${e=>{let{tokens:t}=e;return t.core.foregroundAccent010}};
+    box-shadow: 0px 0px 0px 4px ${e=>{let{tokens:t}=e;return t.core.foregroundAccent010}};
+  }
+
+  .network:hover {
+    background-color: ${e=>{let{tokens:t}=e;return t.core.glass010}};
+  }
+
+  .network:active {
+    background-color: ${e=>{let{tokens:t}=e;return t.core.glass010}};
+  }
+`;var Q=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let X=class extends n.WF{constructor(){super(...arguments),this.params=a.I.state.data?.send}render(){return n.qy` <wui-text variant="sm-regular" color="secondary">Details</wui-text>
+      <wui-flex flexDirection="column" gap="1">
+        <wui-list-content
+          textTitle="Address"
+          textValue=${w.Zv.getTruncateString({string:this.receiverAddress??"",charsStart:4,charsEnd:4,truncate:"middle"})}
+        >
+        </wui-list-content>
+        ${this.networkTemplate()}
+      </wui-flex>`}networkTemplate(){return this.caipNetwork?.name?n.qy` <wui-list-content
+        @click=${()=>this.onNetworkClick(this.caipNetwork)}
+        class="network"
+        textTitle="Network"
+        imageSrc=${(0,L.J)(f.$.getNetworkImage(this.caipNetwork))}
+      ></wui-list-content>`:null}onNetworkClick(e){e&&!this.params&&a.I.push("Networks",{network:e})}};X.styles=J,Q([(0,r.MZ)()],X.prototype,"receiverAddress",void 0),Q([(0,r.MZ)({type:Object})],X.prototype,"caipNetwork",void 0),Q([(0,r.wk)()],X.prototype,"params",void 0),X=Q([(0,w.EM)("w3m-wallet-send-details")],X);const ee=w.AH`
+  wui-avatar,
+  wui-image {
+    display: ruby;
+    width: 32px;
+    height: 32px;
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[20]}};
+  }
+
+  .sendButton {
+    width: 70%;
+    --local-width: 100% !important;
+    --local-border-radius: ${e=>{let{borderRadius:t}=e;return t[4]}} !important;
+  }
+
+  .cancelButton {
+    width: 30%;
+    --local-width: 100% !important;
+    --local-border-radius: ${e=>{let{borderRadius:t}=e;return t[4]}} !important;
+  }
+`;var te=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let ie=class extends n.WF{constructor(){super(),this.unsubscribe=[],this.token=s.R.state.token,this.sendTokenAmount=s.R.state.sendTokenAmount,this.receiverAddress=s.R.state.receiverAddress,this.receiverProfileName=s.R.state.receiverProfileName,this.receiverProfileImageUrl=s.R.state.receiverProfileImageUrl,this.caipNetwork=l.W.state.activeCaipNetwork,this.loading=s.R.state.loading,this.params=a.I.state.data?.send,this.unsubscribe.push(s.R.subscribe(e=>{this.token=e.token,this.sendTokenAmount=e.sendTokenAmount,this.receiverAddress=e.receiverAddress,this.receiverProfileName=e.receiverProfileName,this.receiverProfileImageUrl=e.receiverProfileImageUrl,this.loading=e.loading}),l.W.subscribeKey("activeCaipNetwork",e=>this.caipNetwork=e))}disconnectedCallback(){this.unsubscribe.forEach(e=>e())}render(){return n.qy` <wui-flex flexDirection="column" .padding=${["0","4","4","4"]}>
+      <wui-flex gap="2" flexDirection="column" .padding=${["0","2","0","2"]}>
+        <wui-flex alignItems="center" justifyContent="space-between">
+          <wui-flex flexDirection="column" gap="01">
+            <wui-text variant="sm-regular" color="secondary">Send</wui-text>
+            ${this.sendValueTemplate()}
+          </wui-flex>
+          <wui-preview-item
+            text="${this.sendTokenAmount?w.Zv.roundNumber(Number(this.sendTokenAmount),6,5):"unknown"} ${this.token?.symbol}"
+            .imageSrc=${this.token?.iconUrl}
+          ></wui-preview-item>
+        </wui-flex>
+        <wui-flex>
+          <wui-icon color="default" size="md" name="arrowBottom"></wui-icon>
+        </wui-flex>
+        <wui-flex alignItems="center" justifyContent="space-between">
+          <wui-text variant="sm-regular" color="secondary">To</wui-text>
+          <wui-preview-item
+            text="${this.receiverProfileName?w.Zv.getTruncateString({string:this.receiverProfileName,charsStart:20,charsEnd:0,truncate:"end"}):w.Zv.getTruncateString({string:this.receiverAddress?this.receiverAddress:"",charsStart:4,charsEnd:4,truncate:"middle"})}"
+            address=${this.receiverAddress??""}
+            .imageSrc=${this.receiverProfileImageUrl??void 0}
+            .isAddress=${!0}
+          ></wui-preview-item>
+        </wui-flex>
+      </wui-flex>
+      <wui-flex flexDirection="column" .padding=${["6","0","0","0"]}>
+        <w3m-wallet-send-details
+          .caipNetwork=${this.caipNetwork}
+          .receiverAddress=${this.receiverAddress}
+        ></w3m-wallet-send-details>
+        <wui-flex justifyContent="center" gap="1" .padding=${["3","0","0","0"]}>
+          <wui-icon size="sm" color="default" name="warningCircle"></wui-icon>
+          <wui-text variant="sm-regular" color="secondary">Review transaction carefully</wui-text>
+        </wui-flex>
+        <wui-flex justifyContent="center" gap="3" .padding=${["4","0","0","0"]}>
+          <wui-button
+            class="cancelButton"
+            @click=${this.onCancelClick.bind(this)}
+            size="lg"
+            variant="neutral-secondary"
+          >
+            Cancel
+          </wui-button>
+          <wui-button
+            class="sendButton"
+            @click=${this.onSendClick.bind(this)}
+            size="lg"
+            variant="accent-primary"
+            .loading=${this.loading}
+          >
+            Send
+          </wui-button>
+        </wui-flex>
+      </wui-flex></wui-flex
+    >`}sendValueTemplate(){if(!this.params&&this.token&&this.sendTokenAmount){const e=this.token.price*Number(this.sendTokenAmount);return n.qy`<wui-text variant="md-regular" color="primary"
+        >$${e.toFixed(2)}</wui-text
+      >`}return null}async onSendClick(){if(this.sendTokenAmount&&this.receiverAddress)try{await s.R.sendToken(),this.params?a.I.reset("WalletSendConfirmed"):(p.P.showSuccess("Transaction started"),a.I.replace("Account"))}catch(e){let t="Failed to send transaction";const i=e instanceof q.A&&e.originalName===j.RQ.PROVIDER_RPC_ERROR_NAME.USER_REJECTED_REQUEST,n=e instanceof q.A&&e.originalName===j.RQ.PROVIDER_RPC_ERROR_NAME.SEND_TRANSACTION_ERROR;(i||n)&&(t=e.message),M.E.sendEvent({type:"track",event:i?"SEND_REJECTED":"SEND_ERROR",properties:s.R.getSdkEventProperties(e)}),p.P.showError(t)}else p.P.showError("Please enter a valid amount and receiver address")}onCancelClick(){a.I.goBack()}};ie.styles=ee,te([(0,r.wk)()],ie.prototype,"token",void 0),te([(0,r.wk)()],ie.prototype,"sendTokenAmount",void 0),te([(0,r.wk)()],ie.prototype,"receiverAddress",void 0),te([(0,r.wk)()],ie.prototype,"receiverProfileName",void 0),te([(0,r.wk)()],ie.prototype,"receiverProfileImageUrl",void 0),te([(0,r.wk)()],ie.prototype,"caipNetwork",void 0),te([(0,r.wk)()],ie.prototype,"loading",void 0),te([(0,r.wk)()],ie.prototype,"params",void 0),ie=te([(0,w.EM)("w3m-wallet-send-preview-view")],ie);const ne=w.AH`
+  .icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background-color: ${e=>{let{spacing:t}=e;return t[16]}};
+    border: 8px solid ${e=>{let{tokens:t}=e;return t.theme.borderPrimary}};
+    border-radius: ${e=>{let{borderRadius:t}=e;return t.round}};
+  }
+`;var re=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let oe=class extends n.WF{constructor(){super(),this.unsubscribe=[],this.unsubscribe.push()}render(){return n.qy`
+      <wui-flex
+        flexDirection="column"
+        alignItems="center"
+        gap="4"
+        .padding="${["1","3","4","3"]}"
+      >
+        <wui-flex justifyContent="center" alignItems="center" class="icon-box">
+          <wui-icon size="xxl" color="success" name="checkmark"></wui-icon>
+        </wui-flex>
+
+        <wui-text variant="h6-medium" color="primary">You successfully sent asset</wui-text>
+
+        <wui-button
+          fullWidth
+          @click=${this.onCloseClick.bind(this)}
+          size="lg"
+          variant="neutral-secondary"
+        >
+          Close
+        </wui-button>
+      </wui-flex>
+    `}onCloseClick(){u.W.close()}};oe.styles=ne,oe=re([(0,w.EM)("w3m-send-confirmed-view")],oe)},54109(e,t,i){var n=i(37022),r=i(56370),o=i(94657),s=i(89406),a=i(39446),l=i(69929),c=i(37845);const u=s.AH`
+  :host {
+    position: relative;
+    display: inline-block;
+  }
+
+  :host([data-error='true']) > input {
+    color: ${e=>{let{tokens:t}=e;return t.core.textError}};
+  }
+
+  :host([data-error='false']) > input {
+    color: ${e=>{let{tokens:t}=e;return t.theme.textPrimary}};
+  }
+
+  input {
+    background: transparent;
+    height: auto;
+    box-sizing: border-box;
+    color: ${e=>{let{tokens:t}=e;return t.theme.textPrimary}};
+    font-feature-settings: 'case' on;
+    font-size: ${e=>{let{textSize:t}=e;return t.h4}};
+    caret-color: ${e=>{let{tokens:t}=e;return t.core.backgroundAccentPrimary}};
+    line-height: ${e=>{let{typography:t}=e;return t["h4-regular-mono"].lineHeight}};
+    letter-spacing: ${e=>{let{typography:t}=e;return t["h4-regular-mono"].letterSpacing}};
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    padding: 0px;
+    font-family: ${e=>{let{fontFamily:t}=e;return t.mono}};
+  }
+
+  :host([data-width-variant='auto']) input {
+    width: 100%;
+  }
+
+  :host([data-width-variant='fit']) input {
+    width: 1ch;
+  }
+
+  .wui-input-amount-fit-mirror {
+    position: absolute;
+    visibility: hidden;
+    white-space: pre;
+    font-size: var(--local-font-size);
+    line-height: 130%;
+    letter-spacing: -1.28px;
+    font-family: ${e=>{let{fontFamily:t}=e;return t.mono}};
+  }
+
+  .wui-input-amount-fit-width {
+    display: inline-block;
+    position: relative;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input::placeholder {
+    color: ${e=>{let{tokens:t}=e;return t.theme.textSecondary}};
+  }
+`;var d=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};let h=class extends n.WF{constructor(){super(...arguments),this.inputElementRef=(0,o._)(),this.disabled=!1,this.value="",this.placeholder="0",this.widthVariant="auto",this.maxDecimals=void 0,this.maxIntegers=void 0,this.fontSize="h4",this.error=!1}firstUpdated(){this.resizeInput()}updated(){this.style.setProperty("--local-font-size",s.f.textSize[this.fontSize]),this.resizeInput()}render(){return this.dataset.widthVariant=this.widthVariant,this.dataset.error=String(this.error),this.inputElementRef?.value&&this.value&&(this.inputElementRef.value.value=this.value),"auto"===this.widthVariant?this.inputTemplate():n.qy`
+      <div class="wui-input-amount-fit-width">
+        <span class="wui-input-amount-fit-mirror"></span>
+        ${this.inputTemplate()}
+      </div>
+    `}inputTemplate(){return n.qy`<input
+      ${(0,o.K)(this.inputElementRef)}
+      type="text"
+      inputmode="decimal"
+      pattern="[0-9,.]*"
+      placeholder=${this.placeholder}
+      ?disabled=${this.disabled}
+      autofocus
+      value=${this.value??""}
+      @input=${this.dispatchInputChangeEvent.bind(this)}
+    />`}dispatchInputChangeEvent(){this.inputElementRef.value&&(this.inputElementRef.value.value=l.Z.maskInput({value:this.inputElementRef.value.value,decimals:this.maxDecimals,integers:this.maxIntegers}),this.dispatchEvent(new CustomEvent("inputChange",{detail:this.inputElementRef.value.value,bubbles:!0,composed:!0})),this.resizeInput())}resizeInput(){if("fit"===this.widthVariant){const e=this.inputElementRef.value;if(e){const t=e.previousElementSibling;t&&(t.textContent=e.value||"0",e.style.width=`${t.offsetWidth}px`)}}}};h.styles=[a.W5,a.fD,u],d([(0,r.MZ)({type:Boolean})],h.prototype,"disabled",void 0),d([(0,r.MZ)({type:String})],h.prototype,"value",void 0),d([(0,r.MZ)({type:String})],h.prototype,"placeholder",void 0),d([(0,r.MZ)({type:String})],h.prototype,"widthVariant",void 0),d([(0,r.MZ)({type:Number})],h.prototype,"maxDecimals",void 0),d([(0,r.MZ)({type:Number})],h.prototype,"maxIntegers",void 0),d([(0,r.MZ)({type:String})],h.prototype,"fontSize",void 0),d([(0,r.MZ)({type:Boolean})],h.prototype,"error",void 0),h=d([(0,c.E)("wui-input-amount")],h)},83225(e,t,i){var n=i(37022),r=i(56370),o=(i(18820),i(71056),i(59970),i(7836),i(52574),i(39446)),s=i(37845);const a=i(89406).AH`
+  button {
+    display: block;
+    display: flex;
+    align-items: center;
+    padding: ${e=>{let{spacing:t}=e;return t[1]}};
+    transition: background-color ${e=>{let{durations:t}=e;return t.lg}}
+      ${e=>{let{easings:t}=e;return t["ease-out-power-2"]}};
+    will-change: background-color;
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[32]}};
+  }
+
+  wui-image {
+    border-radius: ${e=>{let{borderRadius:t}=e;return t[32]}};
+  }
+
+  wui-text {
+    padding-left: ${e=>{let{spacing:t}=e;return t[1]}};
+    padding-right: ${e=>{let{spacing:t}=e;return t[1]}};
+  }
+
+  .left-icon-container {
+    width: 24px;
+    height: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .left-image-container {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .chain-image {
+    position: absolute;
+    border: 1px solid ${e=>{let{tokens:t}=e;return t.theme.foregroundPrimary}};
+  }
+
+  /* -- Sizes --------------------------------------------------- */
+  button[data-size='lg'] {
+    height: 32px;
+  }
+
+  button[data-size='md'] {
+    height: 28px;
+  }
+
+  button[data-size='sm'] {
+    height: 24px;
+  }
+
+  button[data-size='lg'] .token-image {
+    width: 24px;
+    height: 24px;
+  }
+
+  button[data-size='md'] .token-image {
+    width: 20px;
+    height: 20px;
+  }
+
+  button[data-size='sm'] .token-image {
+    width: 16px;
+    height: 16px;
+  }
+
+  button[data-size='lg'] .left-icon-container {
+    width: 24px;
+    height: 24px;
+  }
+
+  button[data-size='md'] .left-icon-container {
+    width: 20px;
+    height: 20px;
+  }
+
+  button[data-size='sm'] .left-icon-container {
+    width: 16px;
+    height: 16px;
+  }
+
+  button[data-size='lg'] .chain-image {
+    width: 12px;
+    height: 12px;
+    bottom: 2px;
+    right: -4px;
+  }
+
+  button[data-size='md'] .chain-image {
+    width: 10px;
+    height: 10px;
+    bottom: 2px;
+    right: -4px;
+  }
+
+  button[data-size='sm'] .chain-image {
+    width: 8px;
+    height: 8px;
+    bottom: 2px;
+    right: -3px;
+  }
+
+  /* -- Focus states --------------------------------------------------- */
+  button:focus-visible:enabled {
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundSecondary}};
+    box-shadow: 0 0 0 4px ${e=>{let{tokens:t}=e;return t.core.foregroundAccent040}};
+  }
+
+  /* -- Hover & Active states ----------------------------------------------------------- */
+  @media (hover: hover) {
+    button:hover:enabled,
+    button:active:enabled {
+      background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundSecondary}};
+    }
+  }
+
+  /* -- Disabled states --------------------------------------------------- */
+  button:disabled {
+    background-color: ${e=>{let{tokens:t}=e;return t.theme.foregroundSecondary}};
+    opacity: 0.5;
+  }
+`;var l=function(e,t,i,n){var r,o=arguments.length,s=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"===typeof Reflect&&"function"===typeof Reflect.decorate)s=Reflect.decorate(e,t,i,n);else for(var a=e.length-1;a>=0;a--)(r=e[a])&&(s=(o<3?r(s):o>3?r(t,i,s):r(t,i))||s);return o>3&&s&&Object.defineProperty(t,i,s),s};const c={lg:"lg-regular",md:"lg-regular",sm:"md-regular"},u={lg:"lg",md:"md",sm:"sm"};let d=class extends n.WF{constructor(){super(...arguments),this.size="md",this.disabled=!1,this.text="",this.loading=!1}render(){return this.loading?n.qy` <wui-flex alignItems="center" gap="01" padding="01">
+        <wui-shimmer width="20px" height="20px"></wui-shimmer>
+        <wui-shimmer width="32px" height="18px" borderRadius="4xs"></wui-shimmer>
+      </wui-flex>`:n.qy`
+      <button ?disabled=${this.disabled} data-size=${this.size}>
+        ${this.imageTemplate()} ${this.textTemplate()}
+      </button>
+    `}imageTemplate(){if(this.imageSrc&&this.chainImageSrc)return n.qy`<wui-flex class="left-image-container">
+        <wui-image src=${this.imageSrc} class="token-image"></wui-image>
+        <wui-image src=${this.chainImageSrc} class="chain-image"></wui-image>
+      </wui-flex>`;if(this.imageSrc)return n.qy`<wui-image src=${this.imageSrc} class="token-image"></wui-image>`;const e=u[this.size];return n.qy`<wui-flex class="left-icon-container">
+      <wui-icon size=${e} name="networkPlaceholder"></wui-icon>
+    </wui-flex>`}textTemplate(){const e=c[this.size];return n.qy`<wui-text color="primary" variant=${e}
+      >${this.text}</wui-text
+    >`}};d.styles=[o.W5,o.fD,a],l([(0,r.MZ)()],d.prototype,"size",void 0),l([(0,r.MZ)()],d.prototype,"imageSrc",void 0),l([(0,r.MZ)()],d.prototype,"chainImageSrc",void 0),l([(0,r.MZ)({type:Boolean})],d.prototype,"disabled",void 0),l([(0,r.MZ)()],d.prototype,"text",void 0),l([(0,r.MZ)({type:Boolean})],d.prototype,"loading",void 0),d=l([(0,s.E)("wui-token-button")],d)}}]);
+//# sourceMappingURL=1667.96416ac6.chunk.js.map

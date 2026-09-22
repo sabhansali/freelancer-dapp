@@ -1,0 +1,27 @@
+{
+  "name": "freelancer-dapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "CopyContracts.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabhansali/freelancer-dapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sabhansali/freelancer-dapp/issues"
+  },
+  "homepage": "https://github.com/sabhansali/freelancer-dapp#readme",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.9.6"
+  }
+}
