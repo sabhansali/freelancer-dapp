@@ -227,6 +227,36 @@ select {
   .page-heading { flex-direction: column; }
 }
 
+.defi-page { width: 100%; max-width: 900px; margin: 30px auto 50px; }
+.defi-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+.defi-header h2 { margin: 0 0 7px; font-size: 28px; }
+.defi-header p:not(.eyebrow) { margin: 0; color: #94a3b8; font-size: 14px; }
+.defi-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+.defi-stats > div { min-width: 0; padding: 17px; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; }
+.defi-stats span { display: block; margin-bottom: 9px; color: #94a3b8; font-size: 12px; }
+.defi-stats strong { display: block; overflow: hidden; text-overflow: ellipsis; color: #f8fafc; font-size: 17px; font-weight: 600; }
+.defi-info { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.defi-info p { margin: 0; padding: 13px 16px; background: #111827; border-radius: 10px; color: #94a3b8; font-size: 12px; word-break: break-word; }
+.defi-info strong { color: #cbd5e1; }
+.defi-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.defi-actions form, .defi-action { min-height: 155px; box-sizing: border-box; padding: 17px; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; }
+.defi-actions h3 { margin: 0 0 12px; color: #e2e8f0; font-size: 16px; }
+.defi-actions p { color: #94a3b8; font-size: 13px; }
+.defi-actions input { width: 100%; box-sizing: border-box; margin-bottom: 10px; border: 1px solid #334155; }
+.defi-actions button { width: 100%; }
+.defi-actions button:disabled { cursor: not-allowed; opacity: 0.55; }
+.defi-message { color: #67e8f9; word-break: break-word; }
+.defi-empty { margin: 30px auto; max-width: 560px; padding: 22px; background: #172033; border-radius: 12px; color: #94a3b8; text-align: center; line-height: 1.5; }
+
+@media (max-width: 760px) {
+  .defi-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .defi-header { flex-direction: column; }
+  .defi-stats, .defi-info, .defi-actions { grid-template-columns: 1fr; }
+}
+
 /* =========================
    LIQUIDITY POOL
    ========================= */

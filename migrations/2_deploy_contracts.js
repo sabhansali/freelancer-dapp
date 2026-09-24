@@ -3,6 +3,8 @@ const TaskEscrow = artifacts.require("TaskEscrow");
 const FreelancerToken = artifacts.require("FreelancerToken");
 const FreelancerVault = artifacts.require("FreelancerVault");
 const SimpleAMM = artifacts.require("SimpleAMM");
+const FRLStaking = artifacts.require("FRLStaking");
+const FRLYieldFarm = artifacts.require("FRLYieldFarm");
 
 module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(FreelancerRegistry);
@@ -18,5 +20,9 @@ module.exports = async function (deployer, network, accounts) {
   // Seed the local Ganache deployer with FRL for the experiment.
   await token.mint(accounts[0], web3.utils.toWei("10000", "ether"));
 
-  await deployer.deploy(SimpleAMM,token.address);
+  await deployer.deploy(SimpleAMM, token.address);
+  const amm = await SimpleAMM.deployed();
+
+  await deployer.deploy(FRLStaking, token.address);
+  await deployer.deploy(FRLYieldFarm, amm.address, token.address);
 };

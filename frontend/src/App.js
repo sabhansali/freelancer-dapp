@@ -13,6 +13,8 @@ import CompleteTask from "./components/CompleteTask";
 import ViewTasks from "./components/ViewTasks";
 import FreelancerVault from "./components/FreelancerVault";
 import LiquidityPool from "./components/LiquidityPool";
+import FRLStaking from "./components/FRLStaking";
+import YieldFarming from "./components/YieldFarming";
 
 import "./App.css";
 
@@ -131,6 +133,14 @@ function App() {
         >
           FRL / ETH Pool
         </button>
+
+        <button className={view === "staking" ? "drawer-link active" : "drawer-link"} onClick={() => { setView("staking"); setMenuOpen(false); }}>
+          FRL Staking
+        </button>
+
+        <button className={view === "farming" ? "drawer-link active" : "drawer-link"} onClick={() => { setView("farming"); setMenuOpen(false); }}>
+          Yield Farming
+        </button>
       </aside>
 
       <div className="Nav">
@@ -174,8 +184,7 @@ function App() {
         </div>
       </div>
 
-      {view !== "vault" &&
-        view !== "amm" && (
+      {view !== "vault" && view !== "amm" && view !== "staking" && view !== "farming" && (
           <nav>
             <button
               onClick={() =>
@@ -203,8 +212,7 @@ function App() {
           </nav>
         )}
 
-      {view !== "vault" &&
-        view !== "amm" && (
+      {view !== "vault" && view !== "amm" && view !== "staking" && view !== "farming" && (
           <div
             style={{
               marginTop: 20
@@ -233,8 +241,7 @@ function App() {
           </div>
         )}
 
-      {view !== "vault" &&
-        view !== "amm" && (
+      {view !== "vault" && view !== "amm" && view !== "staking" && view !== "farming" && (
           <ViewTasks
             account={account}
           />
@@ -251,6 +258,9 @@ function App() {
           account={account}
         />
       )}
+
+      {view === "staking" && <FRLStaking account={account} />}
+      {view === "farming" && <YieldFarming account={account} />}
 
     </div>
   );
