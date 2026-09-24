@@ -9,7 +9,8 @@ const files = [
   'IFreelancerRegistry.json',
   'TaskEscrow.json',
   'FreelancerToken.json',
-  'FreelancerVault.json'
+  'FreelancerVault.json',
+  'SimpleAMM.json'
 ];
 
 files.forEach(file => {
