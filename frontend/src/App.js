@@ -15,77 +15,63 @@ import FreelancerVault from "./components/FreelancerVault";
 import LiquidityPool from "./components/LiquidityPool";
 import FRLStaking from "./components/FRLStaking";
 import YieldFarming from "./components/YieldFarming";
+import FreelancerDEX from "./components/FreelancerDEX";
 
 import "./App.css";
 
 function App() {
-  const [view, setView] =
-    useState("dashboard");
+  const [view, setView] = useState("dashboard");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [account, setAccount] = useState("");
 
-  const [menuOpen, setMenuOpen] =
-    useState(false);
-
-  const [account, setAccount] =
-    useState("");
-
-  const {
-    address,
-    isConnected
-  } = useAppKitAccount();
-
-  const {
-    walletProvider
-  } = useAppKitProvider("eip155");
+  const { address, isConnected } = useAppKitAccount();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   useEffect(() => {
     if (walletProvider) {
-      setAppKitProvider(
-        walletProvider
-      );
+      setAppKitProvider(walletProvider);
     }
   }, [walletProvider]);
 
   useEffect(() => {
-    if (
-      isConnected &&
-      address
-    ) {
+    if (isConnected && address) {
       setAccount(address);
     } else {
       setAccount("");
     }
-  }, [
-    address,
-    isConnected
-  ]);
+  }, [address, isConnected]);
+
+  const navigateTo = (nextView) => {
+    setView(nextView);
+    setMenuOpen(false);
+  };
+
+  const isDeFiView = [
+    "vault",
+    "amm",
+    "staking",
+    "farming",
+    "dex"
+  ].includes(view);
 
   return (
     <div className="App">
-
       {menuOpen && (
         <div
           className="drawer-backdrop"
-          onClick={() =>
-            setMenuOpen(false)
-          }
+          onClick={() => setMenuOpen(false)}
         />
       )}
 
       <aside
-        className={`side-drawer ${
-          menuOpen ? "open" : ""
-        }`}
+        className={`side-drawer ${menuOpen ? "open" : ""}`}
       >
         <div className="drawer-header">
-          <span>
-            Freelancer DApp
-          </span>
+          <span>Freelancer DApp</span>
 
           <button
             className="close-menu"
-            onClick={() =>
-              setMenuOpen(false)
-            }
+            onClick={() => setMenuOpen(false)}
             aria-label="Close menu"
           >
             ×
@@ -98,10 +84,7 @@ function App() {
               ? "drawer-link active"
               : "drawer-link"
           }
-          onClick={() => {
-            setView("dashboard");
-            setMenuOpen(false);
-          }}
+          onClick={() => navigateTo("dashboard")}
         >
           Dashboard
         </button>
@@ -112,10 +95,7 @@ function App() {
               ? "drawer-link active"
               : "drawer-link"
           }
-          onClick={() => {
-            setView("vault");
-            setMenuOpen(false);
-          }}
+          onClick={() => navigateTo("vault")}
         >
           FRL Vault
         </button>
@@ -126,37 +106,55 @@ function App() {
               ? "drawer-link active"
               : "drawer-link"
           }
-          onClick={() => {
-            setView("amm");
-            setMenuOpen(false);
-          }}
+          onClick={() => navigateTo("amm")}
         >
           FRL / ETH Pool
         </button>
 
-        <button className={view === "staking" ? "drawer-link active" : "drawer-link"} onClick={() => { setView("staking"); setMenuOpen(false); }}>
+        <button
+          className={
+            view === "staking"
+              ? "drawer-link active"
+              : "drawer-link"
+          }
+          onClick={() => navigateTo("staking")}
+        >
           FRL Staking
         </button>
 
-        <button className={view === "farming" ? "drawer-link active" : "drawer-link"} onClick={() => { setView("farming"); setMenuOpen(false); }}>
+        <button
+          className={
+            view === "farming"
+              ? "drawer-link active"
+              : "drawer-link"
+          }
+          onClick={() => navigateTo("farming")}
+        >
           Yield Farming
+        </button>
+
+        <button
+          className={
+            view === "dex"
+              ? "drawer-link active"
+              : "drawer-link"
+          }
+          onClick={() => navigateTo("dex")}
+        >
+          Freelancer DEX
         </button>
       </aside>
 
       <div className="Nav">
         <button
           className="menu-button"
-          onClick={() =>
-            setMenuOpen(true)
-          }
+          onClick={() => setMenuOpen(true)}
           aria-label="Open menu"
         >
           ☰
         </button>
 
-        <h1>
-          Freelancer Escrow DApp
-        </h1>
+        <h1>Freelancer Escrow DApp</h1>
 
         <p
           style={{
@@ -165,18 +163,14 @@ function App() {
             color: "#94a3b8"
           }}
         >
-          Secure freelance payments
-          using blockchain escrow
+          Secure freelance payments using blockchain escrow
         </p>
       </div>
 
       <div className="account-row">
         <h4>
-          <strong>
-            Connected Account:
-          </strong>{" "}
-          {account ||
-            "Not connected"}
+          <strong>Connected Account:</strong>{" "}
+          {account || "Not connected"}
         </h4>
 
         <div className="connect-wallet">
@@ -184,84 +178,61 @@ function App() {
         </div>
       </div>
 
-      {view !== "vault" && view !== "amm" && view !== "staking" && view !== "farming" && (
-          <nav>
-            <button
-              onClick={() =>
-                setView("register")
-              }
-            >
-              Register Freelancer
-            </button>
+      {!isDeFiView && (
+        <nav>
+          <button onClick={() => navigateTo("register")}>
+            Register Freelancer
+          </button>
 
-            <button
-              onClick={() =>
-                setView("createTask")
-              }
-            >
-              Create Task
-            </button>
+          <button onClick={() => navigateTo("createTask")}>
+            Create Task
+          </button>
 
-            <button
-              onClick={() =>
-                setView("completeTask")
-              }
-            >
-              Complete Task
-            </button>
-          </nav>
-        )}
+          <button onClick={() => navigateTo("completeTask")}>
+            Complete Task
+          </button>
+        </nav>
+      )}
 
-      {view !== "vault" && view !== "amm" && view !== "staking" && view !== "farming" && (
-          <div
-            style={{
-              marginTop: 20
-            }}
-          >
-            {(
-              view === "dashboard" ||
-              view === "register"
-            ) && (
-              <RegisterFreelancer
-                account={account}
-              />
-            )}
+      {!isDeFiView && (
+        <div style={{ marginTop: 20 }}>
+          {(view === "dashboard" || view === "register") && (
+            <RegisterFreelancer account={account} />
+          )}
 
-            {view === "createTask" && (
-              <CreateTask
-                account={account}
-              />
-            )}
+          {view === "createTask" && (
+            <CreateTask account={account} />
+          )}
 
-            {view === "completeTask" && (
-              <CompleteTask
-                account={account}
-              />
-            )}
-          </div>
-        )}
+          {view === "completeTask" && (
+            <CompleteTask account={account} />
+          )}
+        </div>
+      )}
 
-      {view !== "vault" && view !== "amm" && view !== "staking" && view !== "farming" && (
-          <ViewTasks
-            account={account}
-          />
-        )}
+      {!isDeFiView && (
+        <ViewTasks account={account} />
+      )}
 
       {view === "vault" && (
-        <FreelancerVault
-          account={account}
-        />
+        <FreelancerVault account={account} />
       )}
 
       {view === "amm" && (
-        <LiquidityPool
-          account={account}
-        />
+        <LiquidityPool account={account} />
       )}
 
-      {view === "staking" && <FRLStaking account={account} />}
-      {view === "farming" && <YieldFarming account={account} />}
+      {view === "staking" && (
+        <FRLStaking account={account} />
+      )}
 
+      {view === "farming" && (
+        <YieldFarming account={account} />
+      )}
+
+      {view === "dex" && (
+        <FreelancerDEX />
+      )}
     </div>
   );
 }

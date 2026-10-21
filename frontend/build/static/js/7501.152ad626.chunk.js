@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkfreelancer_dapp_frontend||=[]).push([[7501],{67501(a,e,r){r.d(e,{Contract:()=>n.NZ});var n=r(7295)}}]);

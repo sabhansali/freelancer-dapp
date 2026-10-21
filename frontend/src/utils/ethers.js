@@ -3,7 +3,7 @@ import {
   Contract,
   formatEther,
   parseEther
-} from 'ethers';
+} from "ethers";
 
 let appKitProvider = null;
 
@@ -13,102 +13,43 @@ export const setAppKitProvider = (provider) => {
 
 const getBrowserProvider = () => {
   if (!appKitProvider) {
-    throw new Error(
-      'Please connect your wallet using Reown.'
-    );
+    throw new Error("Please connect your wallet using Reown.");
   }
 
-  return new BrowserProvider(
-    appKitProvider
-  );
+  return new BrowserProvider(appKitProvider);
 };
 
-export const getProvider = () => {
-  return getBrowserProvider();
-};
+export const getProvider = () => getBrowserProvider();
 
 export const getConnectedAccount = async () => {
-  const provider =
-    getBrowserProvider();
-
-  const accounts =
-    await provider.send(
-      'eth_accounts',
-      []
-    );
-
-  return accounts[0] || '';
+  const provider = getBrowserProvider();
+  const accounts = await provider.send("eth_accounts", []);
+  return accounts[0] || "";
 };
 
-export const getContract = async (
-  artifact
-) => {
-  const provider =
-    getBrowserProvider();
+/**
+ * Get a deployed Truffle contract.
+ * Pass addressOverride when the contract is dynamically created
+ * or when using multiple deployments of the same contract type.
+ */
+export const getContract = async (artifact, addressOverride) => {
+  const provider = getBrowserProvider();
+  const network = await provider.getNetwork();
+  const networkId = await provider.send("net_version", []);
 
-  const network =
-    await provider.getNetwork();
+  const deployedNetwork = artifact.networks?.[networkId];
+  const address = addressOverride || deployedNetwork?.address;
 
-  console.log(
-    'Network Name:',
-    network.name
-  );
-
-  console.log(
-    'Chain ID:',
-    network.chainId.toString()
-  );
-
-  const networkId =
-    await provider.send(
-      'net_version',
-      []
-    );
-
-  console.log(
-    'Network ID:',
-    networkId
-  );
-
-  const deployedNetwork =
-    artifact.networks?.[networkId];
-
-  if (
-    !deployedNetwork ||
-    !deployedNetwork.address
-  ) {
+  if (!address) {
     throw new Error(
-      `Contract not deployed on the current network (Network ID: ${networkId}, Chain ID: ${network.chainId})`
+      `No deployment address found for ${artifact.contractName || "contract"} on network ${networkId}. ` +
+      "Run the migrations and copy the updated artifacts, or configure the contract address."
     );
   }
 
-  const signer =
-    await provider.getSigner();
+  const signer = await provider.getSigner();
 
-  const address =
-    await signer.getAddress();
-
-  console.log(
-    'Signer Address:',
-    address
-  );
-
-  const contract =
-    new Contract(
-      deployedNetwork.address,
-      artifact.abi,
-      signer
-    );
-
-  console.log(
-    'Contract Address:',
-    deployedNetwork.address
-  );
-
-  return contract;
+  return new Contract(address, artifact.abi, signer);
 };
 
-export {
-  formatEther,
-  parseEther
-};
+export { formatEther, parseEther };
