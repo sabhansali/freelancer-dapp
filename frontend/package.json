@@ -16,7 +16,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "migrate": "cd .. && truffle migrate --reset && node CopyContracts.js"
+    "migrate": "cd .. && truffle migrate --reset --network development && node CopyContracts.js",
+    "migrate:sepolia": "cd .. && truffle migrate --reset --network sepolia && node CopyContracts.js"
   },
   "browserslist": {
     "production": [
@@ -31,6 +32,7 @@
     ]
   },
   "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.1.15",
     "truffle": "^5.5.7"
   }
 }

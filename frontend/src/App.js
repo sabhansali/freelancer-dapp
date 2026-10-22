@@ -16,6 +16,7 @@ import LiquidityPool from "./components/LiquidityPool";
 import FRLStaking from "./components/FRLStaking";
 import YieldFarming from "./components/YieldFarming";
 import FreelancerDEX from "./components/FreelancerDEX";
+import PriceOracle from "./components/PriceOracle";
 
 import "./App.css";
 
@@ -51,7 +52,8 @@ function App() {
     "amm",
     "staking",
     "farming",
-    "dex"
+    "dex",
+    "prices"
   ].includes(view);
 
   return (
@@ -143,6 +145,17 @@ function App() {
         >
           Freelancer DEX
         </button>
+
+        <button
+          className={
+            view === "prices"
+              ? "drawer-link active"
+              : "drawer-link"
+          }
+          onClick={() => navigateTo("prices")}
+        >
+          Market Prices
+        </button>
       </aside>
 
       <div className="Nav">
@@ -232,6 +245,10 @@ function App() {
 
       {view === "dex" && (
         <FreelancerDEX />
+      )}
+
+      {view === "prices" && (
+        <PriceOracle />
       )}
     </div>
   );

@@ -103,6 +103,34 @@ networks: {
     port: 7545,
     network_id: "*",
   },
+  sepolia: {
+    provider: () => {
+      if (!process.env.MNEMONIC || !process.env.SEPOLIA_RPC_URL) {
+        throw new Error(
+          "Set MNEMONIC and SEPOLIA_RPC_URL before deploying to Sepolia."
+        );
+      }
+
+      let HDWalletProvider;
+      try {
+        HDWalletProvider = require("@truffle/hdwallet-provider");
+      } catch (error) {
+        HDWalletProvider = require("./frontend/node_modules/@truffle/hdwallet-provider");
+      }
+      return new HDWalletProvider(
+        process.env.MNEMONIC,
+        process.env.SEPOLIA_RPC_URL
+      );
+    },
+    network_id: 11155111,
+    confirmations: 2,
+    timeoutBlocks: 200,
+    skipDryRun: true,
+  },
+  dashboard: {
+    port: 24012,
+    network_id: "*",
+  },
 },
   // Set default mocha options here, use special reporters, etc.
   mocha: {

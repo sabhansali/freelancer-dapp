@@ -10,6 +10,8 @@ const FreelancerMockToken = artifacts.require("FreelancerMockToken");
 const FreelancerDEXFactory = artifacts.require("FreelancerDEXFactory");
 const FreelancerDEXRouter = artifacts.require("FreelancerDEXRouter");
 const FreelancerLPFarm = artifacts.require("FreelancerLPFarm");
+const MockFeed = artifacts.require("MockFeed");
+const SafePriceConsumer = artifacts.require("SafePriceConsumer");
 
 module.exports = async function (deployer, network, accounts) {
   const toWei = (amount) => web3.utils.toWei(amount.toString(), "ether");
@@ -138,7 +140,38 @@ module.exports = async function (deployer, network, accounts) {
   );
 
   // --------------------------------------------------
-  // 7. Print deployment addresses for frontend configuration
+  // 7. Deploy the price consumer for the selected network
+  // --------------------------------------------------
+
+  let priceConsumer;
+  let mockFeed;
+  let oracleMaxAge;
+
+  if (network === "development" || network === "ganache") {
+    oracleMaxAge = 3600;
+    await deployer.deploy(MockFeed, 8, "ETH / USD (simulated local feed)");
+    mockFeed = await MockFeed.deployed();
+    await mockFeed.setFresh("200000000000");
+    await deployer.deploy(SafePriceConsumer, mockFeed.address, oracleMaxAge);
+    priceConsumer = await SafePriceConsumer.deployed();
+  } else if (network === "sepolia") {
+    const feedAddress = process.env.CHAINLINK_ETH_USD_SEPOLIA_FEED;
+    oracleMaxAge = Number(
+      process.env.CHAINLINK_ETH_USD_MAX_AGE_SECONDS || "5400"
+    );
+
+    if (!feedAddress) {
+      throw new Error(
+        "Set CHAINLINK_ETH_USD_SEPOLIA_FEED before deploying to Sepolia."
+      );
+    }
+
+    await deployer.deploy(SafePriceConsumer, feedAddress, oracleMaxAge);
+    priceConsumer = await SafePriceConsumer.deployed();
+  }
+
+  // --------------------------------------------------
+  // 8. Print deployment addresses for frontend configuration
   // --------------------------------------------------
 
   console.log("\n========================================");
@@ -157,6 +190,14 @@ module.exports = async function (deployer, network, accounts) {
   console.log("Router:", router.address);
   console.log("Pair / LP Token:", pairAddress);
   console.log("LP Farm:", lpFarm.address);
+
+  if (priceConsumer) {
+    console.log("\nPrice Oracle:");
+    console.log("Consumer:", priceConsumer.address);
+    console.log("Feed:", mockFeed ? mockFeed.address : process.env.CHAINLINK_ETH_USD_SEPOLIA_FEED);
+    console.log("Max age (seconds):", oracleMaxAge);
+    console.log("Source:", mockFeed ? "Simulated local feed" : "Chainlink ETH / USD on Sepolia");
+  }
 
   console.log("\nInitial pool:");
   console.log("Token A deposited: 1000 FTA");

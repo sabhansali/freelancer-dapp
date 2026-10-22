@@ -20,7 +20,11 @@ const files = [
   "FreelancerLiquidityPair.json",
   "FreelancerDEXFactory.json",
   "FreelancerDEXRouter.json",
-  "FreelancerLPFarm.json"
+  "FreelancerLPFarm.json",
+
+  // Price oracle contracts
+  "MockFeed.json",
+  "SafePriceConsumer.json"
 ];
 
 fs.mkdirSync(frontendPath, { recursive: true });
